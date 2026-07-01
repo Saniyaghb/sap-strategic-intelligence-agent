@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+.pipeline.lock
+chroma_db/
+data/processed/agent_memory.json
+data/processed/last_agent_trace.json
