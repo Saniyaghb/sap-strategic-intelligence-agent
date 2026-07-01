@@ -16,32 +16,8 @@ In the final local run, the system collected **473 documents** from **7 public s
 
 ## System architecture diagram
 
-```mermaid
-flowchart TD
-    A[Public sources\nSAP News, Google News, arXiv] --> B[Data Collector\ncollectors/live_collect.py]
-    B --> C[Raw Data\ndata/raw/all_sources.csv]
-    C --> D[Cleaning Layer\nprocessing/clean.py]
-    D --> E[Master Dataset\ndata/processed/master_data.csv]
-    E --> F[Chunking Layer\nprocessing/chunk.py]
-    F --> G[Chunks\ndata/processed/chunks.csv]
-    G --> H[Embedding + Indexing\nrag/vector_store.py]
-    H --> I[ChromaDB Vector Store\nsemantic knowledge memory]
+<img width="745" height="943" alt="System architecture - visual selection" src="https://github.com/user-attachments/assets/144098cd-3127-41f7-b1ee-c2557124df17" />
 
-    J[User goal in Streamlit Dashboard\ndashboard/app.py] --> K[Strategic Agent Controller\nagents/strategic_agent.py]
-    K --> L[Planner\nagents/planner.py]
-    L --> M[Agent Tools\nagents/tools.py]
-    M --> N[Dataset Profile Tool]
-    M --> O[Evidence Retrieval Tool]
-    M --> P[Signal Analysis Tool]
-    O --> I
-    I --> Q[Retrieved Evidence]
-    Q --> P
-    P --> R[Decision Engine\nagents/decision.py]
-    R --> S[Recommendation Validator\nagents/validator.py]
-    S --> T[Agent Memory + Trace\nagent_memory.json / last_agent_trace.json]
-    S --> U[Ollama LLM Backend\nagents/llm_client.py]
-    U --> V[Final CEO Briefing\nshown in Streamlit]
-```
 
 The architecture separates the agent logic from the language model. The Python modules control the workflow, while Ollama is only used for the final response wording.
 
@@ -49,26 +25,8 @@ The architecture separates the agent logic from the language model. The Python m
 
 ## Data flow diagram
 
-```mermaid
-flowchart LR
-    A[1. Collect live data] --> B[2. Save raw CSV files]
-    B --> C[3. Clean HTML, normalize columns, remove duplicates]
-    C --> D[4. Build master_data.csv]
-    D --> E[5. Create sentence-aware chunks]
-    E --> F[6. Generate embeddings with all-MiniLM-L6-v2]
-    F --> G[7. Store vectors in ChromaDB]
+<img width="1080" height="556" alt="Data flow diagram - visual selection" src="https://github.com/user-attachments/assets/470dd993-1ba8-485d-be2c-b0ca37582ab5" />
 
-    H[8. User enters strategic goal] --> I[9. Classify intent]
-    I --> J[10. Create execution plan]
-    J --> K[11. Generate multiple retrieval queries]
-    K --> L[12. Retrieve relevant chunks from ChromaDB]
-    L --> M[13. Analyze risks, opportunities, and trends]
-    M --> N[14. Rank strategic recommendations]
-    N --> O[15. Validate recommendation evidence]
-    O --> P[16. Send validated context to Ollama]
-    P --> Q[17. Display CEO briefing in dashboard]
-    O --> R[18. Save memory and execution trace]
-```
 
 This flow shows the full path from public data collection to the final CEO recommendation. The same pipeline can be refreshed automatically, so the knowledge base does not depend on one static file.
 
